@@ -1,13 +1,13 @@
+C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.exe
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.AssemblyInfoInputs.cache
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.AssemblyInfo.cs
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.csproj.CoreCompileInputs.cache
-C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.exe
+C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.dll
+C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.pdb
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.deps.json
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.runtimeconfig.json
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.runtimeconfig.dev.json
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.dll
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.pdb
-C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.dll
-C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.pdb
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.genruntimeconfig.cache
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.csprojAssemblyReference.cache
