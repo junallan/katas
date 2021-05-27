@@ -26,7 +26,7 @@ namespace Bowling
         public class Frame
         {
             public int[] Rolls = new int[2];
-            public int Score;
+            public int? Score;
         }
 
         public class LastSpecialFrame : Frame
@@ -40,9 +40,11 @@ namespace Bowling
             Frames = new Frame[10] { new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame() };
         }
 
+        public int CurrentFrame => _currentFrameIndex + 1;
+
         public void Roll(int pins)
         {
-            if (_currentFrameIndex == (Frames.Length-1) && Frames[Frames.Length-1].Rolls.Sum() != TotalPins)
+            if (_currentFrameIndex == (Frames.Length - 1) && (Frames[Frames.Length - 1].Rolls.Sum() != TotalPins) && ((Frames[Frames.Length - 1].Rolls.Sum() != (TotalPins* RolesInRegularFrame))) && Frames[_currentFrameIndex].Score.HasValue && _currentRollIndex == 0)
             {
                 throw new Exception("Cannot have extra role on last frame if not a spare or a strike");
             }
@@ -61,6 +63,12 @@ namespace Bowling
                     {
                         Frames[previousFrame].Score += pins;
                     }
+                    //else if (IsFrameStrike(previousFrame))
+                    //{
+                    //    if(curre)
+                    //     && Frames[previousFrame].Score == TotalPins && pins == TotalPins
+                    //    Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
+                    //}
                 }
                 else
                 {
@@ -70,18 +78,22 @@ namespace Bowling
                     }
                 }
             }
-            if(_currentRollIndex == 0)
+
+            if((_currentFrameIndex + 1) != TotalFramesInGame)
             {
-                _currentFrameIndex++;
+                if (_currentRollIndex == 0)
+                {
+                    _currentFrameIndex++;
+                }
+
+                if (pins == TotalPins)
+                {
+                    _currentFrameIndex++;
+                    _currentRollIndex = 0;
+                }
             }
 
-            if (pins == TotalPins)
-            {
-                _currentFrameIndex++;
-                _currentRollIndex = 0;
-            }
 
-         
 
             //if(_currentFrame < TotalFramesInGame)
             //{
@@ -163,7 +175,7 @@ namespace Bowling
 
         public int Score()
         {
-            return Frames.Sum(f => f.Score);
+            return Frames.Sum(f => f.Score.GetValueOrDefault(0));
         }
     }
 }

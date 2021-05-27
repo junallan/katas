@@ -214,42 +214,42 @@ namespace Bowling.Tests
             Assert.That(ex.Message, Is.EqualTo("Cannot have extra role on last frame if not a spare or a strike"));
         }
 
-        //[Test]
-        //public void Bowling_perfect_game_has_12_roles_and_10_frames()
-        //{
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
+        [Test]
+        public void Bowling_perfect_game_has_12_roles_and_10_frames()
+        {
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
 
-        //    Assert.AreEqual(10, _game.Frame);
-        //}
+            Assert.AreEqual(10, _game.CurrentFrame);
+        }
 
-        //[Test]
-        //public void Bowling_perfect_game_with_10_roles()
-        //{
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
+        [Test]
+        public void Bowling_perfect_game_with_10_roles()
+        {
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
 
 
-        //    Assert.AreEqual(260, _game.Score());
-        //}
+            Assert.AreEqual(260, _game.Score());
+        }
 
         //[Test]
         //public void Bowling_perfect_game_with_11_roles()
