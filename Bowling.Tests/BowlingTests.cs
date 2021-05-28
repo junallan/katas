@@ -8,7 +8,7 @@ namespace Bowling.Tests
     {
         Game _game;
 
-       [SetUp]
+        [SetUp]
         public void Setup()
         {
             _game = new Game();
@@ -32,8 +32,8 @@ namespace Bowling.Tests
 
         [Test]
         public void Bowling_score_for_9_pins_knocked_down()
-        {  
-           _game.Roll(9);
+        {
+            _game.Roll(9);
 
             Assert.AreEqual(9, _game.Score());
         }
@@ -251,61 +251,61 @@ namespace Bowling.Tests
             Assert.AreEqual(260, _game.Score());
         }
 
-        //[Test]
-        //public void Bowling_perfect_game_with_11_roles()
-        //{
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
+        [Test]
+        public void Bowling_perfect_game_with_11_roles()
+        {
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
 
 
-        //    Assert.AreEqual(290, _game.Score());
-        //}
+            Assert.AreEqual(290, _game.Score());
+        }
 
-        //[Test]
-        //public void Bowling_perfect_game_score()
-        //{
-        //    _game.Roll(10);
-        //    _game.Roll(10); 
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
+        [Test]
+        public void Bowling_perfect_game_score()
+        {
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
 
-        //    Assert.AreEqual(300, _game.Score());
-        //}
+            Assert.AreEqual(300, _game.Score());
+        }
 
-        //[Test]
-        //public void Bowling_almost_perfect_game_with_last_frame_rolling_a_spare_score()
-        //{
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(10);
-        //    _game.Roll(3);
-        //    _game.Roll(7);
-        //    _game.Roll(10);
+        [Test]
+        public void Bowling_almost_perfect_game_with_last_frame_rolling_a_spare_score()
+        {
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(10);
+            _game.Roll(3);
+            _game.Roll(7);
+            _game.Roll(10);
 
-        //    Assert.AreEqual(273, _game.Score());
-        //}
+            Assert.AreEqual(273, _game.Score());
+        }
     }
 }

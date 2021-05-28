@@ -44,6 +44,12 @@ namespace Bowling
 
         public void Roll(int pins)
         {
+            if (Frames[_currentFrameIndex] is LastSpecialFrame)
+            {
+                Frames[_currentFrameIndex].Score += pins;
+                ((LastSpecialFrame)(Frames[_currentFrameIndex])).ExtraRole = pins;
+                return;
+            }
             if (_currentFrameIndex == (Frames.Length - 1) && (Frames[Frames.Length - 1].Rolls.Sum() != TotalPins) && ((Frames[Frames.Length - 1].Rolls.Sum() != (TotalPins* RolesInRegularFrame))) && Frames[_currentFrameIndex].Score.HasValue && _currentRollIndex == 0)
             {
                 throw new Exception("Cannot have extra role on last frame if not a spare or a strike");
@@ -52,6 +58,21 @@ namespace Bowling
             Frames[_currentFrameIndex].Rolls[_currentRollIndex] = pins;
             Frames[_currentFrameIndex].Score = _currentRollIndex == 0 ? pins : Frames[_currentFrameIndex].Rolls.Sum();
 
+            if (_currentFrameIndex > 1 && Frames[_currentFrameIndex].Rolls[0] == TotalPins && Frames[_currentFrameIndex-2].Rolls[0]== TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            {
+                Frames[_currentFrameIndex - 2].Score += TotalPins * 2;
+            }
+            else if(_currentFrameIndex > 1 && _currentRollIndex == 0 && Frames[_currentFrameIndex - 2].Rolls[0] == TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            {
+                Frames[_currentFrameIndex - 2].Score += Frames[_currentFrameIndex - 1].Rolls[0] + pins;
+            }
+            else if(_currentFrameIndex > 0 && _currentRollIndex == 1 && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            {
+                Frames[_currentFrameIndex - 1].Score += Frames[_currentFrameIndex].Rolls.Sum();
+            }
+        
+           
+                
            _currentRollIndex = ++_currentRollIndex % RolesInRegularFrame; 
 
             if(_currentFrameIndex > 0)
@@ -70,13 +91,13 @@ namespace Bowling
                     //    Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
                     //}
                 }
-                else
-                {
-                    if (IsFrameStrike(previousFrame))
-                    {
-                        Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
-                    }
-                }
+                //else
+                //{
+                //    if (IsFrameStrike(previousFrame))
+                //    {
+                //        Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
+                //    }
+                //}
             }
 
             if((_currentFrameIndex + 1) != TotalFramesInGame)
@@ -91,6 +112,21 @@ namespace Bowling
                     _currentFrameIndex++;
                     _currentRollIndex = 0;
                 }
+            }
+            else
+            {
+                if(Frames[_currentFrameIndex].Score == TotalPins && _currentRollIndex != 1)
+                {
+                    var lastSpecialFrame = new LastSpecialFrame();
+               //     lastSpecialFrame.Score = Frames[_currentFrameIndex].Score + pins;
+              //      lastSpecialFrame.ExtraRole = pins;
+                    lastSpecialFrame.Rolls = Frames[_currentFrameIndex].Rolls;
+                    lastSpecialFrame.Score = Frames[_currentFrameIndex].Score;
+                    Frames[_currentFrameIndex] = lastSpecialFrame;
+                }
+
+               
+
             }
 
 
