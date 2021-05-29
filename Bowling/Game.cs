@@ -7,20 +7,13 @@ namespace Bowling
 {
     public class Game
     {
-        private int _score = 0;
-        private int _roleTotal = 0;
-        private int? _previousRoleScore = null;
-        private int? _previousPreviousRoleScore = null;
-        private int _rolesInLastFrame = 0;
-
         private const int RolesInRegularFrame = 2;
         private const int TotalFramesInGame = 10;
         private const int MaxRolesForGame = 21;
         private const int TotalPins = 10;
-
-        public Frame[] Frames { get; set; }
         private int _currentFrameIndex;
         private int _currentRollIndex;
+        public Frame[] Frames { get; set; }
 
 
         public class Frame
