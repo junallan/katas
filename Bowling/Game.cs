@@ -40,17 +40,18 @@ namespace Bowling
             Frames = new Frame[10] { new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame(), new Frame() };
         }
 
-        public int CurrentFrame => _currentFrameIndex + 1;
-
+      
         public void Roll(int pins)
         {
-            if (Frames[_currentFrameIndex] is LastSpecialFrame)
+            if (IsGameLastFrame())
             {
                 Frames[_currentFrameIndex].Score += pins;
                 ((LastSpecialFrame)(Frames[_currentFrameIndex])).ExtraRole = pins;
+
                 return;
             }
-            if (_currentFrameIndex == (Frames.Length - 1) && (Frames[Frames.Length - 1].Rolls.Sum() != TotalPins) && ((Frames[Frames.Length - 1].Rolls.Sum() != (TotalPins* RolesInRegularFrame))) && Frames[_currentFrameIndex].Score.HasValue && _currentRollIndex == 0)
+
+            if (IsInvalidRoll())
             {
                 throw new Exception("Cannot have extra role on last frame if not a spare or a strike");
             }
@@ -58,49 +59,32 @@ namespace Bowling
             Frames[_currentFrameIndex].Rolls[_currentRollIndex] = pins;
             Frames[_currentFrameIndex].Score = _currentRollIndex == 0 ? pins : Frames[_currentFrameIndex].Rolls.Sum();
 
-            if (_currentFrameIndex > 1 && Frames[_currentFrameIndex].Rolls[0] == TotalPins && Frames[_currentFrameIndex-2].Rolls[0]== TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            if (IsCurrentRollStrikeAndLast2RollsStrike())
             {
                 Frames[_currentFrameIndex - 2].Score += TotalPins * 2;
             }
-            else if(_currentFrameIndex > 1 && _currentRollIndex == 0 && Frames[_currentFrameIndex - 2].Rolls[0] == TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            else if (IsCurrentRollSpareAndLast2RollsStrike())
             {
                 Frames[_currentFrameIndex - 2].Score += Frames[_currentFrameIndex - 1].Rolls[0] + pins;
             }
-            else if(_currentFrameIndex > 0 && _currentRollIndex == 1 && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins)
+            else if (IsLastFrameStrikeAndEndOfCurrentFrame())
             {
                 Frames[_currentFrameIndex - 1].Score += Frames[_currentFrameIndex].Rolls.Sum();
             }
-        
-           
-                
-           _currentRollIndex = ++_currentRollIndex % RolesInRegularFrame; 
 
-            if(_currentFrameIndex > 0)
+            _currentRollIndex = ++_currentRollIndex % RolesInRegularFrame;
+
+            if (_currentFrameIndex > 0)
             {
                 var previousFrame = _currentFrameIndex - 1;
-                if (_currentRollIndex == 1)
+
+                if (IsEndOfCurrentFrameAndLastFrameSpare(previousFrame))
                 {
-                    if (IsFrameSpare(previousFrame))
-                    {
-                        Frames[previousFrame].Score += pins;
-                    }
-                    //else if (IsFrameStrike(previousFrame))
-                    //{
-                    //    if(curre)
-                    //     && Frames[previousFrame].Score == TotalPins && pins == TotalPins
-                    //    Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
-                    //}
+                    Frames[previousFrame].Score += pins;
                 }
-                //else
-                //{
-                //    if (IsFrameStrike(previousFrame))
-                //    {
-                //        Frames[previousFrame].Score += Frames[_currentFrameIndex].Score;
-                //    }
-                //}
             }
 
-            if((_currentFrameIndex + 1) != TotalFramesInGame)
+            if (NotLastFrame())
             {
                 if (_currentRollIndex == 0)
                 {
@@ -113,105 +97,40 @@ namespace Bowling
                     _currentRollIndex = 0;
                 }
             }
-            else
+            else if (IsSpareOrStrikeOn2ndRoleOfFrame())
             {
-                if(Frames[_currentFrameIndex].Score == TotalPins && _currentRollIndex != 1)
-                {
-                    var lastSpecialFrame = new LastSpecialFrame();
-               //     lastSpecialFrame.Score = Frames[_currentFrameIndex].Score + pins;
-              //      lastSpecialFrame.ExtraRole = pins;
-                    lastSpecialFrame.Rolls = Frames[_currentFrameIndex].Rolls;
-                    lastSpecialFrame.Score = Frames[_currentFrameIndex].Score;
-                    Frames[_currentFrameIndex] = lastSpecialFrame;
-                }
+                var lastSpecialFrame = new LastSpecialFrame();
+                lastSpecialFrame.Rolls = Frames[_currentFrameIndex].Rolls;
+                lastSpecialFrame.Score = Frames[_currentFrameIndex].Score;
 
-               
-
+                Frames[_currentFrameIndex] = lastSpecialFrame;
             }
-
-
-
-            //if(_currentFrame < TotalFramesInGame)
-            //{
-            //    if (pins == TotalPins)
-            //    {
-            //        _currentFrame++;
-            //    }
-            //    else if (_roleTotal % RolesInFrame != 0)
-            //    {
-            //        _currentFrame++;
-            //    }
-            //}
-
-            //if(_currentFrame == TotalFramesInGame)
-            //{
-            //    _rolesInLastFrame++;
-
-
-            //}
-
-
-            //if (!(_currentFrame == TotalFramesInGame && _rolesInLastFrame == 3))
-            //{         
-            //    if (IsPreviousPreviousRoleStrike())
-            //    {
-            //        _score += _previousRoleScore.Value + pins;
-            //    }
-            //    else if(IsLastRolesSpare())
-            //    {
-            //        _score += pins;
-            //    }
-            //}
-
-            //_score += pins;
-
-            //if (_roleTotal == 1)
-            //{
-            //    _previousRoleScore = pins;
-            //}
-
-            //if (_roleTotal > 1)
-            //{
-            //    _previousPreviousRoleScore = _previousRoleScore;
-            //    _previousRoleScore = pins;
-            //}
         }
 
-        private bool IsFrameStrike(int frameIndex)
-        {
-            return Frames[frameIndex].Rolls.Where(r => r == TotalPins).Any();
-        }
+        private bool IsSpareOrStrikeOn2ndRoleOfFrame() => Frames[_currentFrameIndex].Score == TotalPins && _currentRollIndex != 1;
+        
+        private bool NotLastFrame() => (_currentFrameIndex + 1) != TotalFramesInGame;
+        
+        private bool IsEndOfCurrentFrameAndLastFrameSpare(int frame) => _currentRollIndex == 1 && IsFrameSpare(frame);
 
-        private bool IsFrameSpare(int frameIndex)
-        {
-            return !Frames[frameIndex].Rolls.Where(r => r == TotalPins).Any() && Frames[frameIndex].Score == TotalPins;
-        }
+        private bool IsLastFrameStrikeAndEndOfCurrentFrame() => _currentFrameIndex > 0 && _currentRollIndex == 1 && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins;
+        
+        private bool IsCurrentRollSpareAndLast2RollsStrike() => _currentFrameIndex > 1 && _currentRollIndex == 0 && Frames[_currentFrameIndex - 2].Rolls[0] == TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins;
+        
 
-        //private bool IsNewFrame()
-        //{
-        //    return (_roleTotal % RolesInFrame == 0);
-        //}
+        private bool IsCurrentRollStrikeAndLast2RollsStrike() => _currentFrameIndex > 1 && Frames[_currentFrameIndex].Rolls[0] == TotalPins && Frames[_currentFrameIndex - 2].Rolls[0] == TotalPins && Frames[_currentFrameIndex - 1].Rolls[0] == TotalPins;
+        
+        private bool IsInvalidRoll()=> _currentFrameIndex == (Frames.Length - 1) 
+                                            && (Frames[Frames.Length - 1].Rolls.Sum() != TotalPins) 
+                                            && ((Frames[Frames.Length - 1].Rolls.Sum() != (TotalPins * RolesInRegularFrame))) 
+                                            && Frames[_currentFrameIndex].Score.HasValue && _currentRollIndex == 0;
 
-        //private bool IsPreviousPreviousRoleStrike()
-        //{
-        //    return _previousPreviousRoleScore.HasValue && _previousPreviousRoleScore.Value == TotalPins;
-        //}
+        private bool IsGameLastFrame() => Frames[_currentFrameIndex] is LastSpecialFrame;
 
-        //private bool IsLastRolesSpare()
-        //{
-        //    return  _roleTotal % RolesInFrame != 0
-        //            && _previousPreviousRoleScore.HasValue && _previousRoleScore.HasValue 
-        //            && ((_previousPreviousRoleScore.Value + _previousRoleScore.Value) == TotalPins);
-        //}
+        private bool IsFrameSpare(int frameIndex) => !Frames[frameIndex].Rolls.Where(r => r == TotalPins).Any() && Frames[frameIndex].Score == TotalPins;
 
-        //private bool Last2PinsScoreTotalIs(int scoreTotal)
-        //{
-        //    return _previousRoleScore.HasValue && _previousPreviousRoleScore.HasValue && ((_previousRoleScore.Value + _previousPreviousRoleScore.Value) == scoreTotal);
-        //}
+        public int CurrentFrame => _currentFrameIndex + 1;
 
-        public int Score()
-        {
-            return Frames.Sum(f => f.Score.GetValueOrDefault(0));
-        }
+        public int Score() => Frames.Sum(f => f.Score.GetValueOrDefault(0));     
     }
 }
