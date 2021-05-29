@@ -10,11 +10,8 @@ namespace Bowling
 
         static void Main(string[] args)
         {
-           
-
             Game game = new Game();
 
-          
             string entry = string.Empty;
 
             do

@@ -10,4 +10,3 @@ C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.runtimeconfig.dev.json
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.dll
 C:\katas\Bowling\bin\Debug\netcoreapp3.1\Bowling.pdb
 C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.genruntimeconfig.cache
-C:\katas\Bowling\obj\Debug\netcoreapp3.1\Bowling.csprojAssemblyReference.cache
