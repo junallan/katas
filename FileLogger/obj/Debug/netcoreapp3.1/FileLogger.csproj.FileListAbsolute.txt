@@ -1,0 +1,13 @@
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.exe
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.deps.json
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.runtimeconfig.json
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.runtimeconfig.dev.json
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.dll
+C:\katas\FileLogger\bin\Debug\netcoreapp3.1\FileLogger.pdb
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.csprojAssemblyReference.cache
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.AssemblyInfoInputs.cache
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.AssemblyInfo.cs
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.csproj.CoreCompileInputs.cache
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.dll
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.pdb
+C:\katas\FileLogger\obj\Debug\netcoreapp3.1\FileLogger.genruntimeconfig.cache
